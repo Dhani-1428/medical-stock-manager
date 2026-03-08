@@ -1,11 +1,5 @@
 import mongoose from "mongoose"
 
-const MONGODB_URI = process.env.MONGODB_URI || ""
-
-if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI is required")
-}
-
 // Cache connection for serverless (Next.js) to avoid creating new connection per request
 declare global {
   var mongoose: { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null }
@@ -15,6 +9,12 @@ const cached = global.mongoose ?? { conn: null, promise: null }
 if (process.env.NODE_ENV !== "production") global.mongoose = cached
 
 export async function connectDb(): Promise<typeof mongoose> {
+  const MONGODB_URI = process.env.MONGODB_URI || ""
+  
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is required")
+  }
+  
   if (cached.conn) return cached.conn
   if (!cached.promise) {
     mongoose.set("strictQuery", true)

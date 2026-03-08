@@ -20,9 +20,15 @@ export const env = {
   razorpayWebhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET || "",
 }
 
-if (typeof window === "undefined" && !env.mongoUri) {
-  throw new Error("MONGODB_URI is required")
-}
-if (typeof window === "undefined" && !env.jwtAccessSecret) {
-  throw new Error("JWT_ACCESS_SECRET (or JWT_SECRET) is required")
+// Validate environment variables only at runtime, not during build
+// This prevents build-time errors when env vars aren't available
+export function validateEnv() {
+  if (typeof window === "undefined") {
+    if (!env.mongoUri) {
+      throw new Error("MONGODB_URI is required")
+    }
+    if (!env.jwtAccessSecret) {
+      throw new Error("JWT_ACCESS_SECRET (or JWT_SECRET) is required")
+    }
+  }
 }
