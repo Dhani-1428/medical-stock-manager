@@ -43,3 +43,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<Para
   }
   return runHandler(request, {}, [...withAuth, validate(consentSchema), updateConsent], undefined)
 }
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  })
+}

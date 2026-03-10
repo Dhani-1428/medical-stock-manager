@@ -100,3 +100,14 @@ export async function DELETE(request: Request, { params }: { params: Promise<Par
   }
   return runHandler(request, { id }, [...admin, deleteUser], undefined)
 }
+
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  })
+}

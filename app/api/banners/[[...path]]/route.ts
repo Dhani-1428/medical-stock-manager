@@ -45,6 +45,17 @@ export async function PATCH(request: Request, { params }: { params: Promise<Para
   return runHandler(request, { id }, [...withAuth, requireRole("ADMIN"), validate(updateSchema), updateBanner], undefined)
 }
 
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  })
+}
+
 function notFound() {
   return new Response(JSON.stringify({ success: false, error: "Not found" }), {
     status: 404,
