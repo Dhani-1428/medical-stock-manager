@@ -12,13 +12,29 @@ export async function connectDb(): Promise<typeof mongoose> {
   const MONGODB_URI = process.env.MONGODB_URI || ""
   
   if (!MONGODB_URI) {
-    throw new Error("MONGODB_URI is required")
+    throw new Error(
+      "MONGODB_URI is required. Please set it in your .env file. " +
+      "Example: MONGODB_URI=mongodb://localhost:27017/erp-medical or use MongoDB Atlas connection string."
+    )
   }
   
   if (cached.conn) return cached.conn
   if (!cached.promise) {
     mongoose.set("strictQuery", true)
-    cached.promise = mongoose.connect(MONGODB_URI)
+    cached.promise = mongoose.connect(MONGODB_URI).catch((error) => {
+      // Clear the promise on error so we can retry
+      cached.promise = null
+      
+      // Provide helpful error messages
+      if (error.message?.includes("ECONNREFUSED") || error.message?.includes("connect")) {
+        throw new Error(
+          `Cannot connect to MongoDB at ${MONGODB_URI}. ` +
+          `Please ensure MongoDB is running locally or use a MongoDB Atlas connection string. ` +
+          `Error: ${error.message}`
+        )
+      }
+      throw error
+    })
   }
   cached.conn = await cached.promise
   return cached.conn
