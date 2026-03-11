@@ -50,6 +50,7 @@
 ## 📚 Documentation
 
 - **[QUICK_START.md](./QUICK_START.md)** - Get started in 5 minutes
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Deploy to production (Vercel) ⭐
 - **[SETUP_MONGODB_ATLAS.md](./SETUP_MONGODB_ATLAS.md)** - MongoDB Atlas cloud setup (recommended)
 - **[MONGODB_SETUP.md](./MONGODB_SETUP.md)** - All MongoDB setup options
 - **[MANUAL_DEMO_GUIDE.md](./MANUAL_DEMO_GUIDE.md)** - Feature walkthrough
